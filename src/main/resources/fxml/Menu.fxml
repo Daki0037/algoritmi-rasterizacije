@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="ap" maxHeight="615.0" maxWidth="500.0" minHeight="615.0" minWidth="500.0" prefHeight="615.0" prefWidth="500.0" stylesheets="@../css/Menu.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.danilo.rasterizacija.controllers.MainController">
+   <children>
+      <Pane id="background" layoutY="19.0" prefHeight="600.0" prefWidth="500.0">
+         <children>
+            <Button layoutX="30.0" layoutY="40.0" mnemonicParsing="false" onAction="#onSeedFillBtn" prefHeight="240.0" prefWidth="205.0" styleClass="buttonGroup">
+               <graphic>
+                  <Group>
+                     <children>
+                        <Label layoutX="20.0" layoutY="150.0" text="SeedFill" textFill="#bfbfbf">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                        </Label>
+                        <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/seedfill.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Group>
+               </graphic>
+            </Button>
+            <Button layoutX="265.0" layoutY="40.0" mnemonicParsing="false" onAction="#onScanlineBtn" prefHeight="240.0" prefWidth="205.0" styleClass="buttonGroup">
+               <graphic>
+                  <Group>
+                     <children>
+                        <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/scanline.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="15.0" layoutY="150.0" text="Scanline" textFill="#bfbfbf">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Group>
+               </graphic></Button>
+            <Button layoutX="30.0" layoutY="310.0" mnemonicParsing="false" onAction="#onScanConversionBtn" prefHeight="240.0" prefWidth="205.0" styleClass="buttonGroup">
+               <graphic>
+                  <Group>
+                     <children>
+                        <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/scanconversion.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="20.0" layoutY="150.0" text="2D Scan Conversion" textFill="#bfbfbf">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Group>
+               </graphic></Button>
+            <Button layoutX="265.0" layoutY="310.0" mnemonicParsing="false" onAction="#onTriangulation" prefHeight="240.0" prefWidth="205.0" styleClass="buttonGroup">
+               <graphic>
+                  <Group>
+                     <children>
+                        <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/triangulation.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutY="180.0" text="Triangulacija" textFill="#bfbfbf">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Group>
+               </graphic></Button>
+         </children>
+      </Pane>
+      <Pane id="titleBar" fx:id="titleBar" prefHeight="26.0" prefWidth="500.0">
+         <children>
+            <Button id="exitBtn" layoutX="468.0" mnemonicParsing="false" onAction="#onExitButton" text="X" />
+            <Label layoutX="13.0" layoutY="4.0" text="Prikaz rasterizacije u Javi - Danilo Obradović 27/2020" textFill="#bfbfbf" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

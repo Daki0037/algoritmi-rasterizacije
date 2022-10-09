@@ -1,0 +1,67 @@
+#backgroundPane {
+	-fx-background-color: #35363A;
+}
+
+#gridPane {
+	-fx-background-color: white;
+}
+
+#genPolygonPane {
+	-fx-background-color: #202124;
+	-fx-background-radius: 5px;
+}
+
+#blueButton {
+	-fx-background-color: blue;
+}
+
+#redButton {
+	-fx-background-color: red;
+}
+
+#greenButton {
+	-fx-background-color: green;
+}
+
+.buttonDesign {
+	-fx-background-color: #3C4043;
+	-fx-text-fill: #bfbfbf;
+}
+
+.buttonDesign:hover {
+	-fx-border-radius: 2px;
+	-fx-border-color: white;
+}
+
+.buttonDarkDesign {
+	-fx-background-color: #202124;
+	-fx-text-fill: #bfbfbf;
+}
+
+.buttonDarkDesign:hover {
+	-fx-border-radius: 2px;
+	-fx-border-color: white;
+}
+
+#errorLabel {
+	-fx-opacity: 0.0;
+}
+
+#selectedColor {
+	-fx-border-color: white;
+	-fx-background-color: red;
+}
+
+#titleBar {
+	-fx-background-color: #202124;
+}
+
+#titleBar .button {
+	-fx-background-color: #202124;
+	-fx-text-fill: #bfbfbf;
+}
+
+#titleBar .button:hover {
+	-fx-text-fill: orange;
+}
+

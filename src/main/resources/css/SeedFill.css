@@ -1,0 +1,89 @@
+#background {
+	-fx-background-color: #35363A;
+}
+#gridPane {
+	-fx-background-color: white;
+}
+
+#colorPaletteBar {
+	-fx-background-color: #202124;
+	-fx-background-radius: 5px;
+}
+
+#redButton {
+	-fx-background-color: red;
+	-fx-background-radius: 0px;
+}
+
+#greenButton {
+	-fx-background-color: green;
+	-fx-background-radius: 0px;
+}
+
+#blueButton {
+	-fx-background-color: blue;
+	-fx-background-radius: 0px;
+}
+
+#yellowButton {
+	-fx-background-color: yellow;
+	-fx-background-radius: 0px;
+}
+
+#orangeButton {
+	-fx-background-color: orange;
+	-fx-background-radius: 0px;
+}
+
+#purpleButton {
+	-fx-background-color: purple;
+	-fx-background-radius: 0px;
+}
+
+#blackButton {
+	-fx-background-color: black;
+	-fx-background-radius: 0px;
+}
+
+#whiteButton {
+	-fx-background-color: #DADCE0;
+	-fx-background-radius: 0px;
+}
+
+.buttonDesign {
+	-fx-background-color: #3C4043;
+	-fx-text-fill: #bfbfbf;
+}
+
+.buttonDesign:hover {
+	-fx-border-radius: 2px;
+	-fx-border-color: white;
+}
+
+.buttonDarkDesign {
+	-fx-background-color: #202124;
+	-fx-text-fill: #bfbfbf;
+}
+
+.buttonDarkDesign:hover {
+	-fx-border-radius: 2px;
+	-fx-border-color: white;
+}
+
+#selectedColor {
+	-fx-background-color: black;
+	-fx-border-color: gray;
+}
+
+#titleBar {
+	-fx-background-color: #202124;
+}
+
+#titleBar .button {
+	-fx-background-color: #202124;
+	-fx-text-fill: #bfbfbf;
+}
+
+#titleBar .button:hover {
+	-fx-text-fill: orange;
+}

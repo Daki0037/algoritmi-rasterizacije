@@ -1,0 +1,76 @@
+#background {
+	-fx-background-color: #35363A;
+}
+
+#canvas {
+	-fx-background-color: #DADCE0;
+}
+
+#ButtonBackground {
+	-fx-background-color: #202124;
+	-fx-background-radius: 5px;
+}
+
+.buttonDesign {
+	-fx-background-color: #3C4043;
+	-fx-text-fill: #bfbfbf;
+}
+
+.buttonDesign:hover {
+	-fx-border-radius: 2px;
+	-fx-border-color: white;
+}
+
+.buttonDarkDesign {
+	-fx-background-color: #202124;
+	-fx-text-fill: #bfbfbf;
+}
+
+.buttonDarkDesign:hover {
+	-fx-border-radius: 2px;
+	-fx-border-color: white;
+}
+
+.color-picker {
+	-fx-background-color: #3C4043;
+}
+
+.color-picker:hover {
+	-fx-border-color: white;
+	-fx-border-radius: 2px;
+}
+
+.color-picker .color-picker-label .text {
+    -fx-fill: #bfbfbf;
+}
+
+#pointsList {
+	-fx-background-color: #3C4043;
+}
+
+#pointsList .list-cell {
+	-fx-background-color: #3C4043;
+	-fx-text-fill: #bfbfbf;
+}
+
+#pointsList .list-cell:hover {
+	-fx-background-color: #202124;
+}
+
+#pointsList .list-view {
+	-fx-background-color: #3C4043;
+}
+
+#titleBar {
+	-fx-background-color: #202124;
+}
+
+#titleBar .button {
+	-fx-background-color: #202124;
+	-fx-text-fill: #bfbfbf;
+}
+
+#titleBar .button:hover {
+	-fx-text-fill: orange;
+}
+

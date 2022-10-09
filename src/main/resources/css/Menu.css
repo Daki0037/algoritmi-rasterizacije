@@ -1,0 +1,31 @@
+#background {
+	-fx-background-color: #202124;
+}
+
+#titleBar {
+	-fx-background-color: #35363A;
+}
+
+#titleBar .button {
+	-fx-background-color: #35363A;
+	-fx-text-fill: #bfbfbf;
+}
+
+#titleBar .button:hover {
+	-fx-text-fill: orange;
+}
+
+.buttonGroup {
+	-fx-background-color: #35363A;
+	-fx-background-radius: 0px;
+}
+
+.buttonGroup:hover {
+	-fx-border-color: white;
+}
+
+#SeedFill {
+	-fx-background-color: #008002;
+}
+
+
