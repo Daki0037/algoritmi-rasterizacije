@@ -21,7 +21,14 @@ public class MainController {
 	@FXML
 	private Pane titleBar;
 	
-	private double xOffset = 0, yOffset = 0;
+	private double xCoordinateOfScene = 0, yCoordinateOfScene = 0;
+	private double xCoordinateOfScreen = 0, yCoordinateOfScreen = 0;
+
+	private Stage stage;
+	private Node node;
+	private Scene scene;
+
+	private String fxmlLocation;
 	
 	@FXML
 	public void initialize() {
@@ -29,30 +36,37 @@ public class MainController {
 		titleBar.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                xOffset = event.getSceneX();
-                yOffset = event.getSceneY();
+                setSceneCoordinates(event);
             }
         });
 		
 		titleBar.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                ap.getScene().getWindow().setX(event.getScreenX() - xOffset);
-                ap.getScene().getWindow().setY(event.getScreenY() - yOffset);
+                setCurrentScreenCoordinates(event);
+                moveScreenOnDragging();
             }
         });
+	}
+
+	public void setSceneCoordinates(MouseEvent event) {
+		this.xCoordinateOfScene = event.getSceneX();
+		this.yCoordinateOfScene = event.getSceneY();
+	}
+
+	public void setCurrentScreenCoordinates(MouseEvent event) {
+		xCoordinateOfScreen = event.getScreenX();
+		yCoordinateOfScreen = event.getScreenY();
+	}
+
+	public void moveScreenOnDragging() {
+		ap.getScene().getWindow().setX(xCoordinateOfScreen - xCoordinateOfScene);
+		ap.getScene().getWindow().setY(yCoordinateOfScreen - yCoordinateOfScene);
 	}
 	
 	public void onSeedFillBtn(ActionEvent e) {
 		try {
-			Node node = (Node) e.getSource();
-			Stage stage = (Stage) node.getScene().getWindow();
-			Parent root = FXMLLoader.load(getClass().getResource("/fxml/SeedFill.fxml"));
-			Scene scene = new Scene(root);
-			
-			stage.hide();
-			stage.setScene(scene);
-			stage.show();
+			loadScreen("/fxml/SeedFill.fxml", e);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -61,14 +75,7 @@ public class MainController {
 	
 	public void onScanlineBtn(ActionEvent e) {
 		try {
-			Node node = (Node) e.getSource();
-			Stage stage = (Stage) node.getScene().getWindow();
-			Parent root = FXMLLoader.load(getClass().getResource("/fxml/Scanline.fxml"));
-			Scene scene = new Scene(root);
-			
-			stage.hide();
-			stage.setScene(scene);
-			stage.show();
+			loadScreen("/fxml/Scanline.fxml", e);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -76,14 +83,7 @@ public class MainController {
 	
 	public void onScanConversionBtn(ActionEvent e) {
 		try {
-			Node node = (Node) e.getSource();
-			Stage stage = (Stage) node.getScene().getWindow();
-			Parent root = FXMLLoader.load(getClass().getResource("/fxml/ScanConversion.fxml"));
-			Scene scene = new Scene(root);
-			
-			stage.hide();
-			stage.setScene(scene);
-			stage.show();
+			loadScreen("/fxml/ScanConversion.fxml", e);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -91,17 +91,33 @@ public class MainController {
 	
 	public void onTriangulation(ActionEvent e) {
 		try {
-			Node node = (Node) e.getSource();
-			Stage stage = (Stage) node.getScene().getWindow();
-			Parent root = FXMLLoader.load(getClass().getResource("/fxml/Triangulation.fxml"));
-			Scene scene = new Scene(root);
-			
-			stage.hide();
-			stage.setScene(scene);
-			stage.show();
+			loadScreen("/fxml/Triangulation.fxml", e);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+	}
+
+	public void loadScreen(String fxmlLocation, ActionEvent e) throws IOException {
+		this.fxmlLocation = fxmlLocation;
+		initializateNodeAndStage(e);
+		loadAndSetViewToScene();
+		changeSceneOfStage(scene);
+	}
+
+	public void initializateNodeAndStage(ActionEvent e) {
+		this.node = (Node) e.getSource();
+		this.stage = (Stage) node.getScene().getWindow();
+	}
+
+	public void loadAndSetViewToScene() throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource(fxmlLocation));
+		this.scene = new Scene(root);
+	}
+
+	public void changeSceneOfStage(Scene scene) {
+		stage.hide();
+		stage.setScene(scene);
+		stage.show();
 	}
 	
 	public void onExitButton(ActionEvent e) {
