@@ -6,23 +6,50 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Cell {
-	
+
+	private SeedFillController controller;
+
 	public Rectangle rectangle;
-	boolean clicked = false;
 	private Color color = Color.BLACK;
+
+	boolean clicked = false;
 	private boolean active = false;
+
 	private static int globalX, globalY;
 	public int X, Y;
-	private SeedFillController controller;
+
+	private int x, y;
+	private int width, height;
 	
 	public Cell(int x, int y, int width, int height) {
+		setParametersOfCell(x, y, width, height);
+		initializeRectangle();
+		setCoordinates(x, y);
+	}
+
+	public void setParametersOfCell(int x, int y, int width, int height) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+	}
+
+	public void initializeRectangle() {
 		rectangle = new Rectangle(x, y, width, height);
+		setColorsOfRectangleAndCell();
+	}
+
+	public void setColorsOfRectangleAndCell() {
 		rectangle.setFill(Color.web("#DADCE0"));
 		rectangle.setStroke(Color.web("#35363A"));
 		color = Color.WHITE;
+	}
+
+	public void setCoordinates(int x, int y) {
 		this.X = x;
 		this.Y = y;
 	}
+
 	
 	public void listenerSetup() {
 		
@@ -30,25 +57,7 @@ public class Cell {
 
 			@Override
 			public void handle(Event event) {
-				
-				//Ukoliko je celija aktivna, poziva se SeedFill algoritam i ne izvrsava se klasicno bojenje celija
-				if(active) {
-					globalX = X;
-					globalY = Y;
-					controller.afterClick();
-					return;
-				}
-				
-				//Ukoliko nije selektovana boja, poziva se klasicno na klik, gde se boji celija datom bojom
-				if(!clicked) {
-					clicked = true;
-					color = Color.BLACK;
-					rectangle.setFill(color);
-					return;
-				}
-				clicked = false;
-				rectangle.setFill(Color.web("#DADCE0"));
-				color = Color.WHITE;
+				startOnMouseClicked();
 			}
 			
 		});
@@ -57,21 +66,58 @@ public class Cell {
 
 			@Override
 			public void handle(Event e) {
-				if(active) {
-					globalX = X;
-					globalY = Y;
-					controller.afterClick();
-					return;
-				}
-				clicked = true;
-				color = Color.BLACK;
-				rectangle.setFill(color);
+				startOnMouseDragged();
 			}
 			
 		});
 		
 	}
-	
+
+	public void startOnMouseClicked() {
+
+		//Ukoliko je celija aktivna, poziva se SeedFill algoritam i ne izvrsava se klasicno bojenje celija
+		if(active) {
+			startSeedFillAfterClick();
+			return;
+		}
+
+		if(!clicked) {
+			setClickedCell();
+			return;
+		}
+		resetCellToOriginalState();
+	}
+
+	public void startOnMouseDragged() {
+		if(active) {
+			startSeedFillAfterClick();
+			return;
+		}
+		setClickedCell();
+	}
+
+	public void setClickedCell() {
+		clicked = true;
+		color = Color.BLACK;
+		rectangle.setFill(color);
+	}
+
+	public void resetCellToOriginalState() {
+		clicked = false;
+		resetCellColor();
+	}
+
+	public void startSeedFillAfterClick() {
+		setGlobalCoordinates();
+		controller.afterClick();
+	}
+
+
+	public void setGlobalCoordinates() {
+		globalX = X;
+		globalY = Y;
+	}
+
 	public Rectangle getRectangle() {
 		return rectangle;
 	}
@@ -96,8 +142,7 @@ public class Cell {
 	public boolean getActive() {
 		return active;
 	}
-	
-	//Funkcije za globalX i globalY, koje se dobijaju klikom na celiju pri aktivnom stanju celije
+
 	public static int getGlobalX() {
 		return globalX;
 	}
@@ -125,13 +170,21 @@ public class Cell {
 	public void setY(int y) {
 		this.Y = y;
 	}
-	
-	//Funckija brise boju celije i gasi aktivno stanje celije
+
 	public void clearCell() {
+		resetCellState();
+		resetCellColor();
+	}
+
+	public void resetCellState() {
 		active = false;
 		clicked = false;
+	}
+
+	public void resetCellColor() {
 		color = Color.WHITE;
 		rectangle.setFill(Color.web("#DADCE0"));
 	}
-	
+
+
 }
