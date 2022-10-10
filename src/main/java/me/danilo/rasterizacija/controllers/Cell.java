@@ -24,7 +24,6 @@ public class Cell {
 	public Cell(int x, int y, int width, int height) {
 		setParametersOfCell(x, y, width, height);
 		initializeRectangle();
-		setCoordinates(x, y);
 	}
 
 	public void setParametersOfCell(int x, int y, int width, int height) {
@@ -32,6 +31,8 @@ public class Cell {
 		this.y = y;
 		this.width = width;
 		this.height = height;
+
+		setCoordinates(x, y);
 	}
 
 	public void initializeRectangle() {
@@ -80,11 +81,11 @@ public class Cell {
 			startSeedFillAfterClick();
 			return;
 		}
-
-		if(!clicked) {
+		else if(!clicked) {
 			setClickedCell();
 			return;
 		}
+
 		resetCellToOriginalState();
 	}
 
