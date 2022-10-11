@@ -121,7 +121,7 @@ public class ScanConversionController {
 	}
 
 	int max = 500, min = 50, radiusMin = 50, radiusMax = 145, offsetMax = 100, angleMin = 60, angleMax = 120;
-	int posNeg[] = {1, -1};
+	int positiveAndNegative[] = {1, -1};
 
 	public void onGenerateBtn(ActionEvent e) {
 		clearScreen();
@@ -140,10 +140,15 @@ public class ScanConversionController {
 		}
 	}
 
+	private int CenterOfScreen = 250;
+	private Color randomColor;
+	private Polygon triangle;
+
 	public void generateTrianglesToScreen() {
 		int counter = 0, angle = 0;
 
-		int centerX = 250 + (random.nextInt(offsetMax)*posNeg[random.nextInt(posNeg.length)]), centerY = 250 + (random.nextInt(offsetMax)*posNeg[random.nextInt(posNeg.length)]);
+		int centerX = CenterOfScreen + (random.nextInt(offsetMax) * randomPositiveOrNegative()),
+				centerY = CenterOfScreen + (random.nextInt(offsetMax) * randomPositiveOrNegative());
 		points = new double[6];
 
 		counter = 0;
@@ -157,16 +162,25 @@ public class ScanConversionController {
 			points[counter++] = x;
 			points[counter++] = y;
 		}
-		Polygon p = new Polygon(points);
-		Color randomC;
+
+		triangle = new Polygon(points);
+
+		generateNewRandomColor();
+		addTriangleToScreen();
+	}
+
+	public void generateNewRandomColor() {
 		do {
-			randomC = colors[random.nextInt(colors.length)];
-		} while(usedColors.contains(randomC));
-		p.setFill(randomC);
-		usedColors.add(randomC);
-		polygons.add(p);
-		polyColor.put(p, randomC);
-		gridPane.getChildren().add(p);
+			randomColor = colors[random.nextInt(colors.length)];
+		} while(usedColors.contains(randomColor));
+	}
+
+	public void addTriangleToScreen() {
+		triangle.setFill(randomColor);
+		usedColors.add(randomColor);
+		polygons.add(triangle);
+		polyColor.put(triangle, randomColor);
+		gridPane.getChildren().add(triangle);
 	}
 
 	public void setTriangleNumbers() {
@@ -248,21 +262,19 @@ public class ScanConversionController {
 	}
 	
 	public void onClearCanvas(ActionEvent e) {
-		
-		for(int i = 0; i < polygons.size(); i++) {
-			if(gridPane.getChildren().contains(polygons.get(i)))
-				gridPane.getChildren().remove(polygons.get(i));
-		}
-		
-		polygons.clear();
-		
-		for(int i = 0; i < rows; i++) {
-			for(int j = 0; j < collumns; j++) {
-				cells[i][j].clearCell();
-			}
-		}
+		removePolygonsFromScreen();
+		clearAllCells();
 	}
-	
+
+	public int randomPositiveOrNegative() {
+		int randomGeneratedNumber = random.nextInt(2);
+
+		if(randomGeneratedNumber == 0)
+			return -1;
+		else
+			return 1;
+	}
+
 	//Postavljanje broja celija
 	public void onCanvasSetup(ActionEvent e) {
 		
