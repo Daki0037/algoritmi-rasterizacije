@@ -42,11 +42,17 @@ public class ScanConversionController {
 	public final int WIDTH = 500, HEIGHT = 500;
 	public int rows = 20, collumns = 20, time = 1000,
 			sizeX = WIDTH / collumns, sizeY = HEIGHT / rows, triangleNumbers = 0;
-	public double xOffset = 0, yOffset = 0;
+
+	public double xCoordinateOfScene = 0, yCoordinateOfScene = 0;
+	private double xCoordinateOfScreen = 0, yCoordinateOfScreen = 0;
+
 	public Cell cells[][] = new Cell[rows][collumns];
+
 	public Color[] colors = {Color.BLUE, Color.RED, Color.GREEN, Color.ORANGE, Color.PURPLE, Color.AQUA, Color.LIME};
+
 	Random random = new Random();
 	double points[], toRadians = Math.PI / 180;
+
 	LinkedList<Polygon> polygons = new LinkedList<Polygon>();
 	HashMap<Polygon, Color> polyColor = new HashMap<Polygon, Color>();
 	LinkedList<Color> usedColors = new LinkedList<Color>();
@@ -55,93 +61,156 @@ public class ScanConversionController {
 	
 	@FXML
 	public void initialize() {
-		
-		titleBar.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                xOffset = event.getSceneX();
-                yOffset = event.getSceneY();
-            }
-        });
-		
-		titleBar.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                ap.getScene().getWindow().setX(event.getScreenX() - xOffset);
-                ap.getScene().getWindow().setY(event.getScreenY() - yOffset);
-            }
-        });
-		
-		for(int i = 0; i < rows; i++) {
-			for(int j = 0; j < collumns; j++) {
-				Cell cell = new Cell(i*sizeX, j*sizeY, sizeX, sizeY);
-				cells[i][j] = cell;
-				gridPane.getChildren().add(cell.getRectangle());
-			}
-		}
+		initializeScreen();
+		initializeCellsToScreen();
 		
 		numberTriangles.setItems(list);
 	}
-	
-	public void onGenerateBtn(ActionEvent e) {
-		int max = 500, min = 50, radiusMin = 50, radiusMax = 145, offsetMax = 100, angleMin = 60, angleMax = 120;
-		int posNeg[] = {1, -1};
-		
-		//Cistimo sve celije
+
+	public void initializeScreen() {
+		onTitleBarPressed();
+		onTitleBarDragged();
+	}
+
+	public void initializeCellsToScreen() {
 		for(int i = 0; i < rows; i++) {
 			for(int j = 0; j < collumns; j++) {
-				cells[i][j].clearCell();
+				createNewCell(i, j);
 			}
 		}
-		
+	}
+
+	public void createNewCell(int i, int j) {
+		Cell cell = new Cell(i*sizeX, j*sizeY, sizeX, sizeY);
+		cells[i][j] = cell;
+		gridPane.getChildren().add(cell.getRectangle());
+	}
+
+	public void onTitleBarPressed() {
+		titleBar.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				setSceneCoordinates(event);
+			}
+		});
+	}
+
+	public void onTitleBarDragged() {
+		titleBar.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				setCurrentScreenCoordinates(event);
+				moveScreenOnDragging();
+			}
+		});
+	}
+
+	public void setSceneCoordinates(MouseEvent event) {
+		this.xCoordinateOfScene = event.getSceneX();
+		this.yCoordinateOfScene = event.getSceneY();
+	}
+
+	public void setCurrentScreenCoordinates(MouseEvent event) {
+		xCoordinateOfScreen = event.getScreenX();
+		yCoordinateOfScreen = event.getScreenY();
+	}
+
+	public void moveScreenOnDragging() {
+		ap.getScene().getWindow().setX(xCoordinateOfScreen - xCoordinateOfScene);
+		ap.getScene().getWindow().setY(yCoordinateOfScreen - yCoordinateOfScene);
+	}
+
+	int max = 500, min = 50, radiusMin = 50, radiusMax = 145, offsetMax = 100, angleMin = 60, angleMax = 120;
+	int posNeg[] = {1, -1};
+
+	public void onGenerateBtn(ActionEvent e) {
+		clearScreen();
+		generateTriangles();
+	}
+
+	public void clearScreen() {
+		clearAllCells();
+		removePolygonsFromScreen();
+	}
+
+	public void generateTriangles() {
+		setTriangleNumbers();
+		for(int i = 0; i < triangleNumbers; i++) {
+			generateTrianglesToScreen();
+		}
+	}
+
+	public void generateTrianglesToScreen() {
+		int counter = 0, angle = 0;
+
+		int centerX = 250 + (random.nextInt(offsetMax)*posNeg[random.nextInt(posNeg.length)]), centerY = 250 + (random.nextInt(offsetMax)*posNeg[random.nextInt(posNeg.length)]);
+		points = new double[6];
+
+		counter = 0;
+		angle = 0;
+
+		for(int j = 0; j < 3; j++) {
+			int radius = random.nextInt((radiusMax-radiusMin)+1)+radiusMin;
+			double x = centerX + radius * Math.cos(angle*toRadians);
+			double y = centerY + radius * Math.sin(angle*toRadians);
+			angle += random.nextInt((angleMax-angleMin)+1)+angleMin;
+			points[counter++] = x;
+			points[counter++] = y;
+		}
+		Polygon p = new Polygon(points);
+		Color randomC;
+		do {
+			randomC = colors[random.nextInt(colors.length)];
+		} while(usedColors.contains(randomC));
+		p.setFill(randomC);
+		usedColors.add(randomC);
+		polygons.add(p);
+		polyColor.put(p, randomC);
+		gridPane.getChildren().add(p);
+	}
+
+	public void setTriangleNumbers() {
+		try {
+			getTriangleNumbersFromList();
+			hideErrorMessage();
+		} catch(Exception e1) {
+			showErrorMessage();
+			return;
+		}
+	}
+
+	public void getTriangleNumbersFromList() throws Exception {
+		triangleNumbers = (int) numberTriangles.getValue();
+	}
+
+	public void clearAllCells() {
+		for(int i = 0; i < rows; i++)
+			for(int j = 0; j < collumns; j++)
+				cells[i][j].clearCell();
+	}
+
+	public void removePolygonsFromScreen() {
 		for(Polygon p : polygons) {
 			if(gridPane.getChildren().contains(p))
 				gridPane.getChildren().remove(p);
 		}
-		
 		polygons.clear();
+		clearColorsFromArray();
+	}
+
+	public void clearColorsFromArray() {
 		usedColors.clear();
 		polyColor.clear();
-		try {
-			triangleNumbers = (int) numberTriangles.getValue();
-		} catch(Exception e1) {
-			errorMessage.setStyle("-fx-opacity: 1.0;");
-			return;
-		}
-		
-		errorMessage.setStyle("-fx-opacity: 0.0;");
-		int counter = 0, angle = 0;
-		
-		for(int i = 0; i < triangleNumbers; i++) {
-			
-			int centerX = 250 + (random.nextInt(offsetMax)*posNeg[random.nextInt(posNeg.length)]), centerY = 250 + (random.nextInt(offsetMax)*posNeg[random.nextInt(posNeg.length)]);
-			points = new double[6];
-			
-			counter = 0;
-			angle = 0;
-			
-			for(int j = 0; j < 3; j++) {
-				int radius = random.nextInt((radiusMax-radiusMin)+1)+radiusMin;
-				double x = centerX + radius * Math.cos(angle*toRadians);
-				double y = centerY + radius * Math.sin(angle*toRadians);
-				angle += random.nextInt((angleMax-angleMin)+1)+angleMin;
-				points[counter++] = x;
-				points[counter++] = y;
-			}
-			Polygon p = new Polygon(points);
-			Color randomC;
-			do {
-				randomC = colors[random.nextInt(colors.length)];
-			} while(usedColors.contains(randomC));
-			p.setFill(randomC);
-			usedColors.add(randomC);
-			polygons.add(p);
-			polyColor.put(p, randomC);
-			gridPane.getChildren().add(p);
-		}
-		
 	}
-	
+
+	public void showErrorMessage() {
+		errorMessage.setStyle("-fx-opacity: 1.0;");
+	}
+
+	public void hideErrorMessage() {
+		errorMessage.setStyle("-fx-opacity: 0.0;");
+	}
+
 	public void onScanConversion(ActionEvent e) {
 		
 		if(triangleNumbers == 0 || polygons.isEmpty()) {
