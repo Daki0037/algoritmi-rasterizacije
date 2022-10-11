@@ -309,17 +309,29 @@ public class ScanConversionController {
 	
 	public void onReturnButton(ActionEvent e) {
 		try {
-			Node node = (Node) e.getSource();
-			Stage stage = (Stage) node.getScene().getWindow();
-			Parent root = FXMLLoader.load(getClass().getResource("/fxml/Menu.fxml"));
-			Scene scene = new Scene(root);
-			
-			stage.hide();
-			stage.setScene(scene);
-			stage.show();
+			returnToMenu(e);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+	}
+
+	private Node node;
+	private Stage stage;
+	private Scene scene;
+
+	public void returnToMenu(ActionEvent e) throws IOException {
+		node = (Node) e.getSource();
+		stage = (Stage) node.getScene().getWindow();
+		Parent root = FXMLLoader.load(getClass().getResource("/fxml/Menu.fxml"));
+		scene = new Scene(root);
+
+		changeScene();
+	}
+
+	public void changeScene() {
+		stage.hide();
+		stage.setScene(scene);
+		stage.show();
 	}
 	
 	public void onExitButton(ActionEvent e) {
